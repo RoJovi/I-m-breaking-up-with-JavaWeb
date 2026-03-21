@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Select("select * from users")
+    @Select("select gender from users")
     public List<User> findAll();
 
 }

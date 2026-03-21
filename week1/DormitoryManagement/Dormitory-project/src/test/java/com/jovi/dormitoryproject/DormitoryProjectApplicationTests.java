@@ -1,0 +1,13 @@
+package com.jovi.dormitoryproject;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class DormitoryProjectApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}
