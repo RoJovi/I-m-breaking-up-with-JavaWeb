@@ -14,7 +14,7 @@ public interface DormitoryMapper {
             "ON DUPLICATE KEY UPDATE " +
             "building = VALUES(building), " +
             "roomNumber = VALUES(roomNumber), " +
-            "update_time = NOW()")
+            "updateTime = NOW()")
     int insertOrUpdateDormitory(Dormitory dormitory);
 
     // 获取学生的宿舍信息

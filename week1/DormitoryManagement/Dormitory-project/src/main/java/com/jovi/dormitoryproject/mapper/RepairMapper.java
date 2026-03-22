@@ -32,17 +32,17 @@ public interface RepairMapper {
     @Select("SELECT * FROM repair WHERE orderId = #{orderId}")
     Repair getOrderByOrderId(@Param("orderId") String orderId);
 
-    // 更新报修单状态
+    // 管理员更新报修单状态
     @Update("UPDATE repair SET status = #{status}, updateTime = NOW() " +
             "WHERE orderId = #{orderId}")
     int updateOrderStatus(@Param("orderId") String orderId,
                           @Param("status") String status);
 
-    // 删除报修单
+    // 管理员删除报修单
     @Delete("DELETE FROM repair WHERE orderId = #{orderId}")
     int deleteOrder(@Param("orderId") String orderId);
 
-    // 取消报修单（只能取消待处理的）
+    // 学生取消报修单
     @Delete("DELETE FROM repair WHERE orderId = #{orderId} " +
             "AND userId = #{userId} AND status = #{status}")
     int cancelOrder(@Param("orderId") String orderId,

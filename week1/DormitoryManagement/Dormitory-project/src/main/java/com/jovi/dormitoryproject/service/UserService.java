@@ -17,7 +17,7 @@ public class UserService {
             return false;
         }
 
-        // 学生账号验证
+        // 账号验证
         if ("student".equals(role)) {
             if (!userId.startsWith("3125") && !userId.startsWith("3225")) {
                 System.out.println("学号必须以3125或3225开头！");
@@ -42,6 +42,7 @@ public class UserService {
             user.setPassword(password);
             user.setRole(role);
             user.setName(userId);
+            user.setGender('男');
 
             int result = userMapper.insertUser(user);
             return result > 0;

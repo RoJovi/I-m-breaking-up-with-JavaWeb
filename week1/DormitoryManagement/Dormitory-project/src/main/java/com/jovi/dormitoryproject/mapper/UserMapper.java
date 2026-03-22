@@ -11,7 +11,7 @@ public interface UserMapper {
     @Select("SELECT COUNT(*) FROM `user` WHERE userId = #{userId}")
     int checkUserExists(@Param("userId") String userId);
 
-    // 插入用户（注册）
+    // 注册
     @Insert("INSERT INTO `user` (userId, password, role, name, gender, createTime) " +
             "VALUES (#{userId}, #{password}, #{role}, #{name}, #{gender}, NOW())")
     @Options(useGeneratedKeys = true, keyProperty = "id")
@@ -19,9 +19,6 @@ public interface UserMapper {
 
     // 登录验证
     @Select("SELECT * FROM `user` WHERE userId = #{userId} AND password = #{password}")
-    @Results({
-            @Result(property = "userId", column = "userId")
-    })
     User login(@Param("userId") String userId, @Param("password") String password);
 
     // 修改密码

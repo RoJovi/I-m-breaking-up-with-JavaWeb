@@ -1,6 +1,7 @@
 package com.jovi.dormitoryproject.controller;
 
 import com.jovi.dormitoryproject.pojo.Dormitory;
+import com.jovi.dormitoryproject.pojo.DormitoryInfo;
 import com.jovi.dormitoryproject.pojo.Repair;
 import com.jovi.dormitoryproject.pojo.User;
 import com.jovi.dormitoryproject.service.DormitoryService;
@@ -160,13 +161,67 @@ public class ConsoleController implements CommandLineRunner {
 
     private void bindDormitory() {
         System.out.println("\n===== 绑定宿舍 =====");
-        System.out.print("请输入楼栋号：");
-        String building = scanner.nextLine();
-        System.out.print("请输入房间号：");
-        String roomNumber = scanner.nextLine();
+        // 获取所有楼栋
+        List<String> buildings = dormitoryService.getAllBuildings();
+        if (buildings.isEmpty()) {
+            System.out.println("暂无宿舍信息，请联系管理员！");
+            return;
+        }
 
-        if (dormitoryService.bindDormitory(currentUser.getUserId(), building, roomNumber)) {
-            System.out.println("宿舍绑定成功！");
+        // 显示楼栋列表
+        System.out.println("可选楼栋：");
+        for (int i = 0; i < buildings.size(); i++) {
+            System.out.printf("%d. %s\n", i + 1, buildings.get(i));
+        }
+
+        System.out.print("请选择楼栋（输入序号）：");
+        int buildingIndex;
+        try {
+            buildingIndex = Integer.parseInt(scanner.nextLine()) - 1;
+        } catch (NumberFormatException e) {
+            System.out.println("输入无效！");
+            return;
+        }
+
+        if (buildingIndex < 0 || buildingIndex >= buildings.size()) {
+            System.out.println("无效选择！");
+            return;
+        }
+
+        String selectedBuilding = buildings.get(buildingIndex);
+
+        // 获取该楼栋下的宿舍列表
+        List<DormitoryInfo> dormitories = dormitoryService.getDormitoriesByBuilding(selectedBuilding);
+        if (dormitories.isEmpty()) {
+            System.out.println("该楼栋暂无宿舍信息！");
+            return;
+        }
+
+        // 显示宿舍列表
+        System.out.println("\n可选宿舍：");
+        for (int i = 0; i < dormitories.size(); i++) {
+            System.out.printf("%d. %s\n", i + 1, dormitories.get(i).getRoomNumber());
+        }
+
+        System.out.print("\n请选择宿舍（输入序号）：");
+        int roomIndex;
+        try {
+            roomIndex = Integer.parseInt(scanner.nextLine()) - 1;
+        } catch (NumberFormatException e) {
+            System.out.println("输入无效！");
+            return;
+        }
+
+        if (roomIndex < 0 || roomIndex >= dormitories.size()) {
+            System.out.println("无效选择！");
+            return;
+        }
+
+        DormitoryInfo selected = dormitories.get(roomIndex);
+
+        // 绑定宿舍
+        if (dormitoryService.bindDormitory(currentUser.getUserId(), selected.getBuilding(), selected.getRoomNumber())) {
+            System.out.printf("宿舍绑定成功！%s - %s\n", selected.getBuilding(), selected.getRoomNumber());
         } else {
             System.out.println("宿舍绑定失败！");
         }
