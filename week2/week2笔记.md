@@ -120,7 +120,7 @@ hobby:
   * JwtUtils
 
 * filter
-  * filter类（`@WebFilter(urlPatterns="/*")`）连接servlet包（引导类需要`@ServeletComponentScan`支持）下的filter接口
+  * filter类（`@WebFilter(urlPatterns="/*")`）连接servlet包（引导类需要`@ServletComponentScan`支持）下的filter接口
   
 * Interceptor
 
@@ -329,7 +329,7 @@ yml中multipart -> 点击max
     ```java
     //静态方法
     return Jwts.builder()
-    				.signWith(SignatureAlgorithe.HS256,"(密钥)")//加密算法
+    				.signWith(SignatureAlgorithm.HS256,"(密钥)")//加密算法
     				.addClaims(dataMap)	//添加自定义信息
     				.setExpiration(new Date(System.currentTimeMillis()+3600))	//过期时刻
     				.compact();	//生成令牌 
